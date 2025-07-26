@@ -1,0 +1,23 @@
+name: Docker Build (v8)
+
+on:
+  push:
+    branches: [ releases/v8 ]
+  pull_request:
+    branches: [ releases/v8 ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag dnvntr/cloudfoundry-cli-action:v8
+    - name: Get Version
+      id: get_version
+      run: |
+        VERSION=$(docker run --entrypoint "/bin/bash" dnvntr/cloudfoundry-cli-action:v8 -c cf --version | sed -nr 's/^cf version ([0-9]\.[0-9]+\.[0-9]+).*/\1/p' | xargs)
+        echo "CF CLI Version is ${VERSION}"
+        echo "::set-output name=version::$(echo ${VERSION})"
+    - name: Tag Docker Image
+      run: docker tag dnvntr/cloudfoundry-cli-action:v8 dnvntr/cloudfoundry-cli-action:${{ steps.get_version.outputs.version }}
