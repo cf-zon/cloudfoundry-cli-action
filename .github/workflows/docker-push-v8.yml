@@ -1,6 +1,7 @@
 name: Docker Push (v8)
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - v8
