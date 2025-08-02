@@ -11,8 +11,8 @@ on:
   push:
     branches: [ "releases/v8" , "releases/v8-node", "releases/node"]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*', "releases/v8-node" , "releases/v8", "releases/node" ]
- 
+    tags: [ 'v*.*.*', "releases/v8-node","v8-node" , "v*","releases/v8", "releases/node" ]
+  workflow_dispatch: 
 
 env:
   # Use docker.io for Docker Hub if empty
